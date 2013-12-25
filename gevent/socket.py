@@ -244,6 +244,13 @@ class socket(object):
     def __str__(self):
         return '<%s %s>' % (type(self).__name__, self._formatinfo())
 
+    if "__pypy__" in sys.builtin_module_names:
+        def _reuse(self):
+            self._sock._reuse()
+
+        def _drop(self):
+            self._sock._drop()
+
     def _formatinfo(self):
         try:
             fileno = self.fileno()
