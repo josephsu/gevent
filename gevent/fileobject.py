@@ -72,6 +72,13 @@ else:
                 args = (self.__class__.__name__, id(self), getattr(self, '_fileno', NA), getattr(self, '_mode', NA))
                 return '<%s at 0x%x (%r, %r)>' % args
 
+        if "__pypy__" in sys.builtin_module_names:
+            def _reuse(self):
+                pass
+
+            def _drop(self):
+                pass
+
         def makefile(self, *args, **kwargs):
             return _fileobject(self, *args, **kwargs)
 
