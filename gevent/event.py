@@ -30,6 +30,12 @@ class Event(object):
     def __str__(self):
         return '<%s %s _links[%s]>' % (self.__class__.__name__, (self._flag and 'set') or 'clear', len(self._links))
 
+    if "__pypy__" in sys.builtin_module_names:
+        def _reset_internal_locks(self):
+            # private!  called by Thread._reset_internal_locks by _after_fork()
+            # XXX: need to handle lock reinitialization after fork properly.
+            return
+
     def is_set(self):
         """Return true if and only if the internal flag is true."""
         return self._flag
