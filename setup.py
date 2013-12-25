@@ -86,12 +86,19 @@ ARES = Extension(name='gevent.ares',
 ARES.optional = True
 
 
-ext_modules = [CORE,
+ext_modules = [
                ARES,
                Extension(name="gevent._semaphore",
                          sources=["gevent/gevent._semaphore.c"]),
                Extension(name="gevent._util",
                          sources=["gevent/gevent._util.c"])]
+
+
+if "__pypy__" in sys.builtin_module_names:
+    # built-in gevent.core is not supported on pypy. need to install other core instead.
+    pass
+else:
+    ext_modules.append(CORE)
 
 
 def make_universal_header(filename, *defines):
